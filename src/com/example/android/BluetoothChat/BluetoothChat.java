@@ -66,9 +66,9 @@ public class BluetoothChat extends Activity {
 
     // Layout Views
     private TextView mTitle;
-    private ListView mConversationView;
     private EditText mOutEditText;
     private Button mSendButton;
+    private Button mHelloButton;
 
     // Name of the connected device
     private String mConnectedDeviceName = null;
@@ -144,11 +144,6 @@ public class BluetoothChat extends Activity {
     private void setupChat() {
         Log.d(TAG, "setupChat()");
 
-        // Initialize the array adapter for the conversation thread
-        mConversationArrayAdapter = new ArrayAdapter<String>(this, R.layout.message);
-        mConversationView = (ListView) findViewById(R.id.in);
-        mConversationView.setAdapter(mConversationArrayAdapter);
-
         // Initialize the compose field with a listener for the return key
         mOutEditText = (EditText) findViewById(R.id.edit_text_out);
         mOutEditText.setOnEditorActionListener(mWriteListener);
@@ -163,6 +158,17 @@ public class BluetoothChat extends Activity {
                 sendMessage(message);
             }
         });
+
+        mHelloButton=(Button)findViewById(R.id.button1);
+        mHelloButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO 自動生成されたメソッド・スタブ
+				String msg="hello android bluetooth world!";
+				sendMessage(msg);
+			}
+		});
 
         // Initialize the BluetoothChatService to perform bluetooth connections
         mChatService = new BluetoothChatService(this, mHandler);
@@ -249,7 +255,6 @@ public class BluetoothChat extends Activity {
                 case BluetoothChatService.STATE_CONNECTED:
                     mTitle.setText(R.string.title_connected_to);
                     mTitle.append(mConnectedDeviceName);
-                    mConversationArrayAdapter.clear();
                     break;
                 case BluetoothChatService.STATE_CONNECTING:
                     mTitle.setText(R.string.title_connecting);

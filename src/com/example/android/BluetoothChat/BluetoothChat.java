@@ -36,7 +36,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -156,7 +155,7 @@ public class BluetoothChat extends Activity implements View.OnClickListener{
         mHelloButton.setOnClickListener(this);
 
         // Initialize the touch event on txtArea
-        mTouch=(TextView)findViewById(R.id.touchArea);
+        mTouch=(TextView)findViewById(R.id.txtAction);
 
         // Initialize the BluetoothChatService to perform bluetooth connections
         mChatService = new BluetoothChatService(this, mHandler);
@@ -209,7 +208,8 @@ public class BluetoothChat extends Activity implements View.OnClickListener{
 		Log.v("MotionEvent", "action= "+action+", "+"x= "+String.valueOf(event.getX())+", y= "+String.valueOf(event.getY()));
 		//TextViewに座標を出力
 		mTouch.setText("action= "+action+", "+"x= "+String.valueOf(event.getX())+", y= "+String.valueOf(event.getY()));
-
+		//Bluetoothで出力
+		sendMessage("action= "+action+", "+"x= "+String.valueOf(event.getX())+", y= "+String.valueOf(event.getY())+"\r\n");
 
 		return super.onTouchEvent(event);
 	}

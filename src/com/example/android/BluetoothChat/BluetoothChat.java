@@ -36,7 +36,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.SimpleAdapter.ViewBinder;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +44,7 @@ import android.widget.Toast;
  * This is the main Activity that displays the current chat session.
  */
 @SuppressLint("HandlerLeak")
-public class BluetoothChat extends Activity {
+public class BluetoothChat extends Activity implements View.OnClickListener{
     // Debugging
     private static final String TAG = "BluetoothChat";
     private static final boolean D = true;
@@ -150,25 +150,9 @@ public class BluetoothChat extends Activity {
 
         // Initialize the send button with a listener that for click events
         mSendButton = (Button) findViewById(R.id.button_send);
-        mSendButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                // Send a message using content of the edit text widget
-                TextView view = (TextView) findViewById(R.id.edit_text_out);
-                String message = view.getText().toString();
-                sendMessage(message);
-            }
-        });
-
+        mSendButton.setOnClickListener(this);
         mHelloButton=(Button)findViewById(R.id.button1);
-        mHelloButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO 自動生成されたメソッド・スタブ
-				String msg="hello android bluetooth world!";
-				sendMessage(msg);
-			}
-		});
+        mHelloButton.setOnClickListener(this);
 
         // Initialize the BluetoothChatService to perform bluetooth connections
         mChatService = new BluetoothChatService(this, mHandler);
@@ -178,6 +162,20 @@ public class BluetoothChat extends Activity {
     }
 
     @Override
+	public void onClick(View v) {
+		// TODO 自動生成されたメソッド・スタブ
+		if(v==mSendButton){
+			// Send a message using content of the edit text widget
+            TextView view = (TextView) findViewById(R.id.edit_text_out);
+            String message = view.getText().toString();
+            sendMessage(message);
+		}else if(v==mHelloButton){
+			String msg="hello android bluetooth world!";
+			sendMessage(msg);
+		}
+	}
+
+	@Override
     public synchronized void onPause() {
         super.onPause();
         if(D) Log.e(TAG, "- ON PAUSE -");

@@ -29,14 +29,14 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SimpleAdapter.ViewBinder;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,6 +69,7 @@ public class BluetoothChat extends Activity implements View.OnClickListener{
     private EditText mOutEditText;
     private Button mSendButton;
     private Button mHelloButton;
+    private TextView mTouch;
 
     // Name of the connected device
     private String mConnectedDeviceName = null;
@@ -154,6 +155,9 @@ public class BluetoothChat extends Activity implements View.OnClickListener{
         mHelloButton=(Button)findViewById(R.id.button1);
         mHelloButton.setOnClickListener(this);
 
+        // Initialize the touch event on txtArea
+        mTouch=(TextView)findViewById(R.id.touchArea);
+
         // Initialize the BluetoothChatService to perform bluetooth connections
         mChatService = new BluetoothChatService(this, mHandler);
 
@@ -173,6 +177,41 @@ public class BluetoothChat extends Activity implements View.OnClickListener{
 			String msg="hello android bluetooth world!";
 			sendMessage(msg);
 		}
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		// TODO 自動生成されたメソッド・スタブ
+		//タッチ時のアクション名を格納
+		String action="";
+
+		//アクションによる条件分岐
+		switch (event.getAction()) {
+		//タップし始めたとき
+		case MotionEvent.ACTION_DOWN:
+			action="ACTION_DOWN";
+			break;
+			//指を持ち上げた時
+		case MotionEvent.ACTION_UP:
+			action="ACTION_UP";
+			break;
+		//指を動かした時
+		case MotionEvent.ACTION_MOVE:
+			action="ACTION_MOVE";
+			break;
+		//UP&DOWNしたとき
+		case MotionEvent.ACTION_CANCEL:
+			action="ACTION_CANSEL";
+			break;
+		}
+
+		//LogCatに座標を出力(実機では変化無し)
+		Log.v("MotionEvent", "action= "+action+", "+"x= "+String.valueOf(event.getX())+", y= "+String.valueOf(event.getY()));
+		//TextViewに座標を出力
+		mTouch.setText("action= "+action+", "+"x= "+String.valueOf(event.getX())+", y= "+String.valueOf(event.getY()));
+
+
+		return super.onTouchEvent(event);
 	}
 
 	@Override
